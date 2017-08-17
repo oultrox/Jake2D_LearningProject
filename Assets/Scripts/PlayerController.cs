@@ -87,9 +87,17 @@ public class PlayerController : MonoBehaviour {
 
     public void Kill()
     {
+        if (PlayerPrefs.GetFloat("Highscore", 0) < GetDistance())
+        {
+            PlayerPrefs.SetFloat("Highscore", GetDistance());
+            GUIManager.instance.UpdateBestScoreText();
+        }
+
         GameManager.Instance.GameOver();
         animator.SetBool("isAlive", false);
         this.gameObject.SetActive(false);
+
+        
     }
 
     public void StartGame()
