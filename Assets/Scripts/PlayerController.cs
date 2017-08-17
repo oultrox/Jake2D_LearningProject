@@ -5,18 +5,30 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public static PlayerController instance;
     private Rigidbody2D rigidBody2D;
     [SerializeField] private float jumpForce;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private float runningSpeed = 1.5f;
     private Vector2 velocidad;
+    private Vector3 startingPosition;
+
     //-----Métodos API------
     private void Awake()
     {
+        if (instance==null)
+        {
+            instance = this;
+        }else if(instance !=this)
+        {
+            Destroy(gameObject);
+        }
         rigidBody2D = GetComponent<Rigidbody2D>();
         animator.SetBool("isAlive", true);
+        startingPosition = this.transform.position;
     }
+
     // Update is called once per frame
     void Update ()
     {
@@ -45,6 +57,7 @@ public class PlayerController : MonoBehaviour {
         }
             
     }
+
     //-----Métodos custom-----
     private void Jump()
     {
@@ -61,5 +74,17 @@ public class PlayerController : MonoBehaviour {
             return true;
         }
         return false;
+    }
+
+    public void Kill()
+    {
+        GameManager.Instance.GameOver();
+        animator.SetBool("isAlive", false);
+    }
+
+    public void StartGame()
+    {
+        this.transform.position = startingPosition;
+        animator.SetBool("isAlive", true);
     }
 }

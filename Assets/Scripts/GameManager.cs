@@ -33,15 +33,15 @@ public class GameManager : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetKeyDown(0))
+        if (Input.GetKeyDown("s"))
         {
             StartGame();
-
         }
     }
     public void StartGame()
     {
         SetGameState(GameState.inGame);
+        PlayerController.instance.StartGame();
     }
 
     public void GameOver()
