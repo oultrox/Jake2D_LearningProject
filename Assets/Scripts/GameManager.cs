@@ -10,12 +10,13 @@ public enum GameState
     gameOver
 }
 public class GameManager : MonoBehaviour {
-
-    private static GameManager instance;
-    private GameState currentGameState;
     [SerializeField] private Canvas menuCanvas;
     [SerializeField] private Canvas inGameCanvas;
     [SerializeField] private Canvas gameOverCanvas;
+    private static GameManager instance;
+    private GameState currentGameState;
+    private int collectedCoins;
+    
 
     private void Awake()
     {
@@ -34,17 +35,10 @@ public class GameManager : MonoBehaviour {
         currentGameState = GameState.menu;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown("s"))
-        {
-            StartGame();
-        }
-    }
     public void StartGame()
     {
         SetGameState(GameState.inGame);
-        PlayerController.instance.StartGame();
+        PlayerController.Instance.StartGame();
     }
 
     public void GameOver()
@@ -55,7 +49,7 @@ public class GameManager : MonoBehaviour {
     public void BackToMenu()
     {
         LevelGenerator.instance.RestartPieces();
-        PlayerController.instance.StartGame();
+        PlayerController.Instance.StartGame();
         SetGameState(GameState.menu);
     }
 
@@ -63,7 +57,7 @@ public class GameManager : MonoBehaviour {
     {
         LevelGenerator.instance.RestartPieces();
         SetGameState(GameState.inGame);
-        PlayerController.instance.StartGame();
+        PlayerController.Instance.StartGame();
     }
 
     private void SetGameState(GameState state)
@@ -92,6 +86,12 @@ public class GameManager : MonoBehaviour {
         currentGameState = state;
     }
 
+    public void CollectedCoin()
+    {
+        collectedCoins++;
+        GUIManager.instance.UpdateCoinText();
+    }
+
     #region Properties
     public GameState CurrentGameState
     {
@@ -116,6 +116,19 @@ public class GameManager : MonoBehaviour {
         set
         {
             instance = value;
+        }
+    }
+
+    public int CollectedCoins
+    {
+        get
+        {
+            return collectedCoins;
+        }
+
+        set
+        {
+            collectedCoins = value;
         }
     }
     #endregion

@@ -9,7 +9,7 @@ public class KillTrigger : MonoBehaviour {
         if (collision.tag == "Player")
         {
             Debug.Log("Player is ded");
-            PlayerController.instance.Kill();
+            PlayerController.Instance.Kill();
         }
     }
 }

@@ -5,14 +5,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public static PlayerController instance;
+    private static PlayerController instance;
     private Rigidbody2D rigidBody2D;
     [SerializeField] private float jumpForce;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private float runningSpeed = 1.5f;
+    //Cached variables for the distance algorythm
     private Vector2 velocidad;
     private Vector3 startingPosition;
+
+    private Vector2 originPoint;
+    private Vector2 destinyPoint;
+
+    
 
     //-----Métodos API------
     private void Awake()
@@ -91,5 +97,30 @@ public class PlayerController : MonoBehaviour {
         this.transform.position = startingPosition;
         this.gameObject.SetActive(true);
         animator.SetBool("isAlive", true);
+    }
+
+    public float GetDistance()
+    {
+        originPoint.x = startingPosition.x;
+        originPoint.y = 0;
+
+        destinyPoint.x = this.transform.position.x;
+        destinyPoint.y = 0;
+        
+        float traveledDistance = Vector2.Distance(originPoint,destinyPoint);
+        return traveledDistance;
+    }
+
+    public static PlayerController Instance
+    {
+        get
+        {
+            return instance;
+        }
+
+        set
+        {
+            instance = value;
+        }
     }
 }
