@@ -73,18 +73,23 @@ public class PlayerController : MonoBehaviour {
         {
             return true;
         }
-        return false;
+        else
+        {
+            return false;
+        }
     }
 
     public void Kill()
     {
         GameManager.Instance.GameOver();
         animator.SetBool("isAlive", false);
+        this.gameObject.SetActive(false);
     }
 
     public void StartGame()
     {
         this.transform.position = startingPosition;
+        this.gameObject.SetActive(true);
         animator.SetBool("isAlive", true);
     }
 }

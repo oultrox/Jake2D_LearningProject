@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour {
 
     private static GameManager instance;
     private GameState currentGameState;
+    [SerializeField] private Canvas menuCanvas;
+    [SerializeField] private Canvas inGameCanvas;
+    [SerializeField] private Canvas gameOverCanvas;
 
     private void Awake()
     {
@@ -54,15 +57,31 @@ public class GameManager : MonoBehaviour {
         SetGameState(GameState.menu);
     }
 
+    public void RestartGame()
+    {
+        LevelGenerator.instance.RestartPieces();
+        SetGameState(GameState.inGame);
+        PlayerController.instance.StartGame();
+    }
     private void SetGameState(GameState state)
     {
         switch (state)
         {
             case GameState.menu:
+                menuCanvas.enabled = true;
+                inGameCanvas.enabled = false;
+                gameOverCanvas.enabled = false;
                 break;
             case GameState.inGame:
+                menuCanvas.enabled = false;
+                inGameCanvas.enabled = true;
+                gameOverCanvas.enabled = false;
                 break;
             case GameState.gameOver:
+                gameOverCanvas.enabled = true;
+                menuCanvas.enabled = false;
+                inGameCanvas.enabled = false;
+                
                 break;
             default:
                 break;

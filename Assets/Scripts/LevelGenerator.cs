@@ -68,4 +68,16 @@ public class LevelGenerator : MonoBehaviour {
         pieces.Remove(oldestPiece);
         Destroy(oldestPiece.gameObject);
     }
+
+    public void RestartPieces()
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            LevelPiece oldestPiece = pieces[i];
+            Destroy(oldestPiece.gameObject);
+        }
+        pieces.Clear();
+        GenerateInitialPieces();
+
+    }
 }
