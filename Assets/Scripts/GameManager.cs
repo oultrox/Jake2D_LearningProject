@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour {
 
     public void BackToMenu()
     {
+        LevelGenerator.instance.RestartPieces();
+        PlayerController.instance.StartGame();
         SetGameState(GameState.menu);
     }
 
@@ -63,6 +65,7 @@ public class GameManager : MonoBehaviour {
         SetGameState(GameState.inGame);
         PlayerController.instance.StartGame();
     }
+
     private void SetGameState(GameState state)
     {
         switch (state)
