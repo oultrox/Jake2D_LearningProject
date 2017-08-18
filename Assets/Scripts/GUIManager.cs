@@ -1,15 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GUIManager : MonoBehaviour {
+
     public static GUIManager instance;
     [SerializeField] private Text coinText;
     [SerializeField] private Text distanceText;
     [SerializeField] private Text bestScoreText;
+    [SerializeField] private Text gameOverScoreText;
+    [SerializeField] private Text gameOverCoinText;
     private float timer;
 
+    //-----Métodos API------
     private void Awake()
     {
         if (instance == null)
@@ -19,16 +21,6 @@ public class GUIManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-    }
-
-    public void UpdateCoinText()
-    {
-        coinText.text = GameManager.Instance.CollectedCoins.ToString();
-    }
-
-    public void UpdateBestScoreText()
-    {
-        bestScoreText.text = PlayerPrefs.GetFloat("Highscore").ToString("f0");
     }
 
     public void Update()
@@ -42,6 +34,29 @@ public class GUIManager : MonoBehaviour {
                 distanceText.text = PlayerController.Instance.GetDistance().ToString("f0");
             }
         }
-        
+
     }
+
+    //-----Métodos custom-----
+    public void UpdateCoinText()
+    {
+        coinText.text = GameManager.Instance.CollectedCoins.ToString();
+    }
+
+    public void UpdateGameOverCoinText()
+    {
+        gameOverCoinText.text = GameManager.Instance.CollectedCoins.ToString("f0");
+    }
+
+    public void UpdateGameOverScoreText()
+    {
+        gameOverScoreText.text = PlayerController.Instance.GetDistance().ToString("f0");
+    }
+
+    public void UpdateBestScoreText()
+    {
+        bestScoreText.text = PlayerPrefs.GetFloat("Highscore").ToString("f0");
+    }
+
+    
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum GameState
 {
@@ -9,6 +6,8 @@ public enum GameState
     inGame,
     gameOver
 }
+
+//Manages the transition of the states of the game
 public class GameManager : MonoBehaviour {
     [SerializeField] private Canvas menuCanvas;
     [SerializeField] private Canvas inGameCanvas;
@@ -17,7 +16,8 @@ public class GameManager : MonoBehaviour {
     private GameState currentGameState;
     private int collectedCoins;
     
-
+    //----Métodos API-----
+    //Singleton creation
     private void Awake()
     {
         if (instance==null)
@@ -30,19 +30,26 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    //Initalization in the menu view.
     void Start()
     {
         currentGameState = GameState.menu;
     }
 
+    //------Métodos Custom------
     public void StartGame()
     {
         SetGameState(GameState.inGame);
         PlayerController.Instance.StartGame();
+        this.collectedCoins = 0;
+        GUIManager.instance.UpdateCoinText();
+        GUIManager.instance.UpdateBestScoreText();
     }
 
     public void GameOver()
     {
+        GUIManager.instance.UpdateGameOverScoreText();
+        GUIManager.instance.UpdateGameOverCoinText();
         SetGameState(GameState.gameOver);
     }
 
@@ -53,13 +60,17 @@ public class GameManager : MonoBehaviour {
         SetGameState(GameState.menu);
     }
 
+    //Restart was made to restore the position of the player correctly along with the GUI labels.
     public void RestartGame()
     {
         LevelGenerator.instance.RestartPieces();
         SetGameState(GameState.inGame);
         PlayerController.Instance.StartGame();
+        this.collectedCoins = 0;
+        GUIManager.instance.UpdateCoinText();
     }
 
+    //Activa y desactiva los canvas necesarios para los estados del juego además de su asignación de variable.
     private void SetGameState(GameState state)
     {
         switch (state)

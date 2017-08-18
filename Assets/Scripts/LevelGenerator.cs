@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Generates the level based on pre-made platform chunks.
 public class LevelGenerator : MonoBehaviour {
+
     public static LevelGenerator instance;
     [SerializeField] private List<LevelPiece> levelPrefabs = new List<LevelPiece>();
     [SerializeField] private Transform levelStartPoint;
     [SerializeField] private List<LevelPiece> pieces = new List<LevelPiece>();
 
+    //------Metodos API-------
+    //Singleton creation
     private void Awake()
     {
-        //Singleton creation
         if (instance == null)
         {
             instance = this;
@@ -19,13 +22,14 @@ public class LevelGenerator : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+    //Initalization
 
     void Start()
     {
         GenerateInitialPieces();
     }
 
-
+    //-----Metodos custom--------
     public void GenerateInitialPieces()
     {
         for (int i = 0; i < 2; i++)
@@ -34,6 +38,7 @@ public class LevelGenerator : MonoBehaviour {
         }
     }
 
+    //Creates a piece o add another one in the end of the existent one.
     public void AddPiece()
     {
         //Pick the random number

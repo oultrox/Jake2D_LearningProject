@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+//Player movement, scoring, health and death control here.
 public class PlayerController : MonoBehaviour {
 
     private static PlayerController instance;
-    private Rigidbody2D rigidBody2D;
     [SerializeField] private float jumpForce;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private float runningSpeed = 1.5f;
+    private Rigidbody2D rigidBody2D;
     //Cached variables for the distance algorythm
     private Vector2 velocidad;
     private Vector3 startingPosition;
-
     private Vector2 originPoint;
     private Vector2 destinyPoint;
 
-    
-
     //-----Métodos API------
+    //Singleton creation
     private void Awake()
     {
         if (instance==null)
@@ -30,6 +26,11 @@ public class PlayerController : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+    }
+
+    //Initialization
+    private void Start()
+    {
         rigidBody2D = GetComponent<Rigidbody2D>();
         animator.SetBool("isAlive", true);
         startingPosition = this.transform.position;
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour {
             
     }
 
+    //This function is called every fixed framerate frame.
     private void FixedUpdate()
     {
         if (GameManager.Instance.CurrentGameState == GameState.inGame)
@@ -73,9 +75,10 @@ public class PlayerController : MonoBehaviour {
         }
     }
     
+    //Racyast function that returns true if the player's raycast collided with a collider in the layer.
     bool IsGrounded()
     {
-        if (Physics2D.Raycast(this.transform.position,Vector2.down,0.2f, groundLayer.value))
+        if (Physics2D.Raycast(this.transform.position,Vector2.down,0.1f, groundLayer.value))
         {
             return true;
         }
@@ -85,21 +88,21 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    //Saves the highscore to PlayerPrefs, and connects with the GameManager to let it know that the game is over.
     public void Kill()
     {
         if (PlayerPrefs.GetFloat("Highscore", 0) < GetDistance())
         {
             PlayerPrefs.SetFloat("Highscore", GetDistance());
-            GUIManager.instance.UpdateBestScoreText();
         }
-
+        GUIManager.instance.UpdateBestScoreText();
         GameManager.Instance.GameOver();
         animator.SetBool("isAlive", false);
         this.gameObject.SetActive(false);
 
         
     }
-
+    //Initializates the position of the player.
     public void StartGame()
     {
         this.transform.position = startingPosition;
@@ -107,6 +110,7 @@ public class PlayerController : MonoBehaviour {
         animator.SetBool("isAlive", true);
     }
 
+    //Gets the distance to set it in score.
     public float GetDistance()
     {
         originPoint.x = startingPosition.x;
@@ -119,6 +123,7 @@ public class PlayerController : MonoBehaviour {
         return traveledDistance;
     }
 
+    #region Properties
     public static PlayerController Instance
     {
         get
@@ -131,4 +136,7 @@ public class PlayerController : MonoBehaviour {
             instance = value;
         }
     }
+    #endregion
+
+
 }
