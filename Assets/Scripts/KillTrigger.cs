@@ -6,7 +6,6 @@ public class KillTrigger : MonoBehaviour {
     {
         if (collision.tag == "Player")
         {
-            Debug.Log("Player is ded");
             PlayerController.Instance.Kill();
         }
     }

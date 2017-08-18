@@ -43,7 +43,6 @@ public class PlayerController : MonoBehaviour {
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Left mouse button clicked!");
                 Jump();
             }
             animator.SetBool("isGrounded", IsGrounded());
